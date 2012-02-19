@@ -3,9 +3,9 @@
 # recompile and execute
 all: glawn test
 
-# link objects
+# hand off compile and move executable
 glawn: 
-	make src/Makefile
+	cd src; make
 	mv src/glawn bin/glawn
 
 test:
@@ -13,4 +13,4 @@ test:
 
 clean:
 	rm -f bin/*
-	rm -f src/*.o
+	cd src; make clean
