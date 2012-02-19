@@ -18,7 +18,6 @@ all: glawn
 # link objects
 glawn: $(SOURCES:.c=.o)
 	$(CCLD) $^ $(LDFLAGS) -o $@
-	mv glawn ../bin
 
 # compile sources into objects
 %.o: %.c
