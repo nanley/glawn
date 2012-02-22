@@ -1,16 +1,13 @@
-.PHONY: all test clean
+.PHONY: all clean
 
 # recompile and execute
-all: glawn test
+all: glawn
 
 # hand off compile and move executable
 glawn: 
-	cd src; make
-	mv src/glawn bin/glawn
-
-test:
-	./bin/glawn
+	make -C src
+	mv src/glawn .
 
 clean:
-	rm -f bin/*
-	cd src; make clean
+	rm -f glawn
+	make -C src clean

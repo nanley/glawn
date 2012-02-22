@@ -21,7 +21,7 @@ glawn: $(SOURCES:.c=.o)
 
 # compile sources into objects
 %.o: %.c
-	$(CC) -g $(CFLAGS) -c $^
+	$(CC) $(CFLAGS) -c $^
 
 clean:
 	rm -f *.o
