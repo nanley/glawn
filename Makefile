@@ -1,9 +1,9 @@
 .PHONY: all clean
 
-# recompile and execute
+# create executable
 all: glawn
 
-# hand off compile and move executable
+# hand off compilation and move executable
 glawn: 
 	make -C src
 	mv src/glawn .

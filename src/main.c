@@ -159,7 +159,7 @@ int main (int argc, char *argv[])
 
 	/* Login button */
 	data.login = button = gtk_button_new_with_mnemonic (" _Login ");
-   gtk_widget_set_sensitive (button, FALSE);
+	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(login), NULL);
 	gtk_box_pack_end (GTK_BOX(hbox3), button, FALSE, FALSE, 5);
 
@@ -186,9 +186,6 @@ int main (int argc, char *argv[])
 		  "     Welcome to Glawn!\n"
 		  "===========================\n\n");
 
-
-
-
 	/*Load_settings */
 	init_mutex();
 	load_settings();
@@ -198,11 +195,7 @@ int main (int argc, char *argv[])
 	g_thread_create((GThreadFunc)check_status, NULL, FALSE, NULL);
 	g_timeout_add_seconds_full(G_PRIORITY_LOW, 1, init_check_status, NULL, NULL);
 	
-	
-	
-	
-	
-   /* Start main loop */
+   	/* Start main loop */
 	gtk_main ();
 	gdk_threads_leave ();
 
