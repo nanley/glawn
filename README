@@ -7,7 +7,7 @@ the Georgia Tech-Lorraine (GTL) campus network. Glawn is licensed under GPLv3.
 
 Requirements:
  * curl
- * gtk+-2.0
+ * gtk+-3.0
 
 If any problems are found, please contact Nanley Chery <nanleychery@gmail.com>
 so that they can be fixed.

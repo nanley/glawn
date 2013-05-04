@@ -32,7 +32,6 @@ int main (int argc, char *argv[])
 	GtkWidget *check;
 	GtkWidget *button;
 	GtkWidget *entry;
-	GtkTooltips *tooltip;
 
 	/* Packing boxes */
 	GtkWidget *vbMain;			/* main vertical box */
@@ -54,18 +53,18 @@ int main (int argc, char *argv[])
 	gtk_container_set_border_width (GTK_CONTAINER (window), 10);
 	g_signal_connect (window, "destroy", G_CALLBACK(quit_glawn), NULL);
 	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file ("./icons/glawn-icon.png", NULL);
-  	gtk_window_set_icon (GTK_WINDOW(window), pixbuf);
+	gtk_window_set_icon (GTK_WINDOW(window), pixbuf);
 
 	/* Create pack boxes */
-	vbMain= gtk_vbox_new (FALSE, 3);
-	vbox1 = gtk_vbox_new (FALSE, 0);
-	vbox2 = gtk_vbox_new (FALSE, 3);
-	vbox3 = gtk_vbox_new (FALSE, 0);
-	hbox1 = gtk_hbox_new (FALSE, 0);
-	hbox2 = gtk_hbox_new (FALSE, 0);
-	hbox3 = gtk_hbox_new (FALSE, 0);
-	hbMac = gtk_hbox_new (FALSE, 0);
-	hbox9 = gtk_hbox_new (FALSE, 0);
+	vbMain= gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
+	vbox1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
+	vbox3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	hbox1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	hbox3 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	hbMac = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	hbox9 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbMain);
 
 	/* Username entry label */
@@ -84,13 +83,15 @@ int main (int argc, char *argv[])
 	gtk_box_pack_start (GTK_BOX(vbox1),label,FALSE, FALSE, 2);
 
 	/* Username entry field */
-	data.nameEntry = entry = gtk_entry_new_with_max_length (50);
+	data.nameEntry = entry = gtk_entry_new();
+	gtk_entry_set_max_length((GtkEntry *) entry, 50);
 	gtk_entry_set_width_chars ((GtkEntry *) entry, 25);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
 
 	/* Password entry field */
-	data.pwdEntry = entry = gtk_entry_new_with_max_length(50);
+	data.pwdEntry = entry = gtk_entry_new();
+	gtk_entry_set_max_length((GtkEntry *) entry, 50);
 	gtk_entry_set_visibility ((GtkEntry *)entry, FALSE);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
@@ -104,8 +105,7 @@ int main (int argc, char *argv[])
 
 	/* Location checkbox */
 	data.locCBox = check = gtk_check_button_new_with_mnemonic ("_GTL");
-	tooltip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tooltip, check, "Enable Georgia Tech-Lorraine support", NULL);
+	gtk_widget_set_tooltip_text (check, "Enable Georgia Tech-Lorraine support");
 	g_signal_connect (check, "toggled", G_CALLBACK(set_url), NULL);
 	gtk_box_pack_start (GTK_BOX(hbox9), check, FALSE, FALSE, 9);
 	gtk_box_pack_start (GTK_BOX(vbox2), hbox9, FALSE, FALSE, 0);
@@ -126,10 +126,9 @@ int main (int argc, char *argv[])
 				("_Enable Inbound Service Security");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(check), TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox3), check, FALSE, FALSE, 0);
-	tooltip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tooltip, check, "When turned on,"
+	gtk_widget_set_tooltip_text (check, "When turned on,"
 	" devices outside of the LAWN network are blocked from "
-	"connecting to services running on your device.", NULL);
+	"connecting to services running on your device.");
 
 	/* Login this device radio */
 	data.radio_this = radio1 = gtk_radio_button_new_with_mnemonic_from_widget
@@ -143,14 +142,15 @@ int main (int argc, char *argv[])
 		(GTK_RADIO_BUTTON(radio1), "Login a _different device");
 	g_signal_connect (radio2, "toggled", G_CALLBACK(mac_switch), (gpointer) TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox3), radio2, FALSE, FALSE, 0);
-	gtk_tooltips_set_tip (tooltip, radio2, "You can authenticate other"
+	gtk_widget_set_tooltip_text (radio2, "You can authenticate other"
 	" devices currently on LAWN. The login will last as long as the"
 	" device maintains a valid DHCP lease. You accept responsibility"
-	" for all usage associated with this device.", NULL);
+	" for all usage associated with this device.");
 
 	/* MAC address label and entry */
 	label = gtk_label_new ("        MAC Address : "); // more elegance
-	data.macEntry = entry = gtk_entry_new_with_max_length (12);
+	data.macEntry = entry = gtk_entry_new();
+	gtk_entry_set_max_length((GtkEntry *) entry, 12);
 	gtk_entry_set_width_chars ((GtkEntry *) entry, 18);
 	gtk_widget_set_sensitive (entry, FALSE);
 	gtk_box_pack_start (GTK_BOX(hbMac), label, FALSE, FALSE, 0);
@@ -165,7 +165,7 @@ int main (int argc, char *argv[])
 
 	/* Logout button */
 	data.logout = button = gtk_button_new_with_mnemonic ("Logou_t");
-        gtk_widget_set_sensitive (button, FALSE);
+	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(logout), NULL);
 	gtk_box_pack_end (GTK_BOX(hbox3), button, FALSE, FALSE, 0);
 
