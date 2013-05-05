@@ -28,17 +28,17 @@ int main (int argc, char *argv[])
 	GtkWidget *align;
 	GtkWidget *expander;
 	GtkWidget *label;
+	GtkWidget *label2;
 	GtkWidget *radio1, *radio2;
 	GtkWidget *check;
 	GtkWidget *button;
 	GtkWidget *entry;
 
 	/* Packing boxes */
-	GtkWidget *vbMain;			/* main vertical box */
-	GtkWidget *hbox1, *vbox1, *vbox2;	/* username/password */
+	GtkWidget *gridMain;
+	GtkWidget *gridEntry1;
+	GtkWidget *gridBottom;
 	GtkWidget *hbox2, *vbox3, *hbMac;	/* login options */
-	GtkWidget *hbox3;			/* cancel/login buttons */
-	GtkWidget *hbox9;			/* show pwd & gtl */
 
 	/* Initialize multihreading and gtk functions */
 	g_thread_init (NULL);
@@ -56,63 +56,58 @@ int main (int argc, char *argv[])
 	gtk_window_set_icon (GTK_WINDOW(window), pixbuf);
 
 	/* Create pack boxes */
-	vbMain= gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
-	vbox1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
+	gridMain = gtk_grid_new();
+	gridEntry1 = gtk_grid_new();
+	gridBottom = gtk_grid_new();
 	vbox3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	hbox1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 	hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	hbox3 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 	hbMac = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	hbox9 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_container_add (GTK_CONTAINER (window), vbMain);
+	gtk_container_add (GTK_CONTAINER (window), gridMain);
+
+	/* Main Entry Grid */
+	gtk_grid_attach (GTK_GRID(gridMain), gridEntry1, 0, 0, 1, 1);
 
 	/* Username entry label */
 	label = gtk_label_new ("GT Account : ");
-	gtk_misc_set_alignment ((GtkMisc *)label, 0, 0);
-	gtk_box_pack_start (GTK_BOX(vbox1), label, TRUE, FALSE, 0);
+	gtk_widget_set_halign (label, GTK_ALIGN_END);
+	gtk_grid_attach ( GTK_GRID(gridEntry1), label, 0, 0, 1, 1);
 
 	/* Password entry label */
-	label = gtk_label_new ("Password : ");
-	gtk_misc_set_alignment ((GtkMisc *)label, 0, 0);
-	gtk_box_pack_start (GTK_BOX(vbox1), label, TRUE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(hbox1), vbox1, FALSE, FALSE, 0);
-
-	/* Blank text for alignment */
-	label = gtk_label_new ("");
-	gtk_box_pack_start (GTK_BOX(vbox1),label,FALSE, FALSE, 2);
+	label2 = gtk_label_new ("Password : ");
+	gtk_widget_set_halign (label2, GTK_ALIGN_END);
+	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), label2, label, GTK_POS_BOTTOM, 1,1);
 
 	/* Username entry field */
 	data.nameEntry = entry = gtk_entry_new();
 	gtk_entry_set_max_length((GtkEntry *) entry, 50);
 	gtk_entry_set_width_chars ((GtkEntry *) entry, 25);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
-	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), entry, label, GTK_POS_RIGHT, 2,1);
 
 	/* Password entry field */
 	data.pwdEntry = entry = gtk_entry_new();
 	gtk_entry_set_max_length((GtkEntry *) entry, 50);
 	gtk_entry_set_visibility ((GtkEntry *)entry, FALSE);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
-	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(hbox1), vbox2, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX(vbMain), hbox1, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), entry, label2, GTK_POS_RIGHT, 2,1);
 
 	/* Show password checkbox */
 	data.pwdCBox = check = gtk_check_button_new_with_mnemonic ("_Show password");
 	g_signal_connect (check, "toggled", G_CALLBACK(show_pass), (GtkEntry *)entry);
-	gtk_box_pack_start (GTK_BOX(hbox9), check, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), check, entry, GTK_POS_BOTTOM, 1,1);
 
 	/* Location checkbox */
 	data.locCBox = check = gtk_check_button_new_with_mnemonic ("_GTL");
 	gtk_widget_set_tooltip_text (check, "Enable Georgia Tech-Lorraine support");
 	g_signal_connect (check, "toggled", G_CALLBACK(set_url), NULL);
-	gtk_box_pack_start (GTK_BOX(hbox9), check, FALSE, FALSE, 9);
-	gtk_box_pack_start (GTK_BOX(vbox2), hbox9, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), check, data.pwdCBox, GTK_POS_RIGHT, 1,1);
+
+
+
 
 	/* Options expander */
 	expander = gtk_expander_new_with_mnemonic ("_Options");
-	gtk_box_pack_start (GTK_BOX(vbMain), expander, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to (GTK_GRID(gridMain), expander, gridEntry1, GTK_POS_BOTTOM, 1,1);
 	gtk_container_add (GTK_CONTAINER(expander), hbox2);
 
 	/* Left indent alignment for expander */
@@ -157,26 +152,36 @@ int main (int argc, char *argv[])
 	gtk_box_pack_start (GTK_BOX(hbMac), entry, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox3), hbMac, FALSE, FALSE, 0);
 
+
+
+	/* Bottom Status and Controls */
+	gtk_grid_attach_next_to (GTK_GRID(gridMain), gridBottom, expander, GTK_POS_BOTTOM, 1,1);
+
 	/* Login button */
 	data.login = button = gtk_button_new_with_mnemonic (" _Login ");
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(login), NULL);
-	gtk_box_pack_end (GTK_BOX(hbox3), button, FALSE, FALSE, 5);
+	gtk_grid_attach ( GTK_GRID(gridBottom), data.login, 5, 0, 1, 1);
 
 	/* Logout button */
 	data.logout = button = gtk_button_new_with_mnemonic ("Logou_t");
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(logout), NULL);
-	gtk_box_pack_end (GTK_BOX(hbox3), button, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridBottom), data.logout, data.login, GTK_POS_LEFT, 1,1);
+	gtk_widget_set_hexpand (button, TRUE);
+	gtk_widget_set_halign (button, GTK_ALIGN_END);
+	gtk_widget_set_margin_right (button, 5);
 
 	/* Spinner */
 	data.spinner = gtk_spinner_new ();
-	gtk_box_pack_start (GTK_BOX(hbox3), data.spinner, FALSE, FALSE, 2);
+	gtk_widget_set_margin_right (data.spinner, 4);
+	gtk_grid_attach ( GTK_GRID(gridBottom), data.spinner, 0, 0, 1, 1);
 
 	/* Statusbar */
 	data.status = label = gtk_label_new ("");
-	gtk_box_pack_start (GTK_BOX(hbox3), label, FALSE, FALSE, 2);
-	gtk_box_pack_start (GTK_BOX(vbMain), hbox3, FALSE, FALSE, 0);
+	gtk_grid_attach_next_to ( GTK_GRID(gridBottom), data.status, data.spinner, GTK_POS_RIGHT, 1,1);
+
+
 
 	/* Display window */
 	gtk_widget_show_all (window);
