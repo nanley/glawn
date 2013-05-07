@@ -25,7 +25,6 @@ int main (int argc, char *argv[])
 {
 	/* GUI widgets */
 	GtkWidget *window;
-	GtkWidget *align;
 	GtkWidget *expander;
 	GtkWidget *label;
 	GtkWidget *label2;
@@ -34,11 +33,12 @@ int main (int argc, char *argv[])
 	GtkWidget *button;
 	GtkWidget *entry;
 
-	/* Packing boxes */
+	/* Layout grids */
 	GtkWidget *gridMain;
 	GtkWidget *gridEntry1;
+	GtkWidget *gridOptions;
 	GtkWidget *gridBottom;
-	GtkWidget *hbox2, *vbox3, *hbMac;	/* login options */
+	GtkWidget *gridMac;
 
 	/* Initialize multihreading and gtk functions */
 	g_thread_init (NULL);
@@ -55,13 +55,12 @@ int main (int argc, char *argv[])
 	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file ("./icons/glawn-icon.png", NULL);
 	gtk_window_set_icon (GTK_WINDOW(window), pixbuf);
 
-	/* Create pack boxes */
+	/* Create layout grids */
 	gridMain = gtk_grid_new();
 	gridEntry1 = gtk_grid_new();
+	gridOptions = gtk_grid_new();
 	gridBottom = gtk_grid_new();
-	vbox3 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	hbMac = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gridMac = gtk_grid_new();
 	gtk_container_add (GTK_CONTAINER (window), gridMain);
 
 	/* Main Entry Grid */
@@ -108,39 +107,35 @@ int main (int argc, char *argv[])
 	/* Options expander */
 	expander = gtk_expander_new_with_mnemonic ("_Options");
 	gtk_grid_attach_next_to (GTK_GRID(gridMain), expander, gridEntry1, GTK_POS_BOTTOM, 1,1);
-	gtk_container_add (GTK_CONTAINER(expander), hbox2);
-
-	/* Left indent alignment for expander */
-	align = gtk_alignment_new (0, 0, 1 , 1);
-	gtk_widget_set_size_request (align, 17, 0);
-	gtk_box_pack_start (GTK_BOX(hbox2), align, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(hbox2), vbox3, FALSE, FALSE, 0);
+	gtk_orientable_set_orientation ( GTK_ORIENTABLE(gridOptions), GTK_ORIENTATION_VERTICAL);
+	gtk_widget_set_margin_left (gridOptions, 17);
+	gtk_container_add (GTK_CONTAINER(expander), gridOptions);
 
 	/* ISS checkbox */
 	data.issCBox = check = gtk_check_button_new_with_mnemonic
 				("_Enable Inbound Service Security");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(check), TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox3), check, FALSE, FALSE, 0);
 	gtk_widget_set_tooltip_text (check, "When turned on,"
 	" devices outside of the LAWN network are blocked from "
 	"connecting to services running on your device.");
+	gtk_container_add( GTK_CONTAINER(gridOptions), check);
 
 	/* Login this device radio */
 	data.radio_this = radio1 = gtk_radio_button_new_with_mnemonic_from_widget
 					(NULL, "Lo_gin this device");
 	g_signal_connect (radio1, "toggled", G_CALLBACK(mac_switch), (gpointer) FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radio1), TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox3), radio1, FALSE, FALSE, 0);
+	gtk_container_add( GTK_CONTAINER(gridOptions), radio1);
 
 	/* Login other device radio */
 	data.radio_other = radio2 = gtk_radio_button_new_with_mnemonic_from_widget
 		(GTK_RADIO_BUTTON(radio1), "Login a _different device");
 	g_signal_connect (radio2, "toggled", G_CALLBACK(mac_switch), (gpointer) TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox3), radio2, FALSE, FALSE, 0);
 	gtk_widget_set_tooltip_text (radio2, "You can authenticate other"
 	" devices currently on LAWN. The login will last as long as the"
 	" device maintains a valid DHCP lease. You accept responsibility"
 	" for all usage associated with this device.");
+	gtk_container_add( GTK_CONTAINER(gridOptions), radio2);
 
 	/* MAC address label and entry */
 	label = gtk_label_new ("        MAC Address : "); // more elegance
@@ -148,9 +143,9 @@ int main (int argc, char *argv[])
 	gtk_entry_set_max_length((GtkEntry *) entry, 12);
 	gtk_entry_set_width_chars ((GtkEntry *) entry, 18);
 	gtk_widget_set_sensitive (entry, FALSE);
-	gtk_box_pack_start (GTK_BOX(hbMac), label, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(hbMac), entry, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(vbox3), hbMac, FALSE, FALSE, 0);
+	gtk_container_add( GTK_CONTAINER(gridMac), label);
+	gtk_container_add( GTK_CONTAINER(gridMac), entry);
+	gtk_container_add( GTK_CONTAINER(gridOptions), gridMac);
 
 
 
@@ -167,10 +162,10 @@ int main (int argc, char *argv[])
 	data.logout = button = gtk_button_new_with_mnemonic ("Logou_t");
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(logout), NULL);
-	gtk_grid_attach_next_to ( GTK_GRID(gridBottom), data.logout, data.login, GTK_POS_LEFT, 1,1);
 	gtk_widget_set_hexpand (button, TRUE);
 	gtk_widget_set_halign (button, GTK_ALIGN_END);
 	gtk_widget_set_margin_right (button, 5);
+	gtk_grid_attach_next_to ( GTK_GRID(gridBottom), data.logout, data.login, GTK_POS_LEFT, 1,1);
 
 	/* Spinner */
 	data.spinner = gtk_spinner_new ();
