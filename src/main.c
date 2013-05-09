@@ -30,6 +30,7 @@ int main (int argc, char *argv[])
 	GtkWidget *label2;
 	GtkWidget *radio1, *radio2;
 	GtkWidget *check;
+	GtkWidget *buttonbox;
 	GtkWidget *button;
 	GtkWidget *entry;
 
@@ -151,21 +152,22 @@ int main (int argc, char *argv[])
 
 	/* Bottom Status and Controls */
 	gtk_grid_attach_next_to (GTK_GRID(gridMain), gridBottom, expander, GTK_POS_BOTTOM, 1,1);
+	buttonbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+	gtk_widget_set_hexpand (buttonbox, TRUE);
+	gtk_widget_set_halign (buttonbox, GTK_ALIGN_END);
+	gtk_grid_attach ( GTK_GRID(gridBottom), buttonbox, 5, 0, 1, 1);
 
 	/* Login button */
 	data.login = button = gtk_button_new_with_mnemonic (" _Login ");
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(login), NULL);
-	gtk_grid_attach ( GTK_GRID(gridBottom), data.login, 5, 0, 1, 1);
+	gtk_container_add( GTK_CONTAINER(buttonbox), data.login);
 
 	/* Logout button */
 	data.logout = button = gtk_button_new_with_mnemonic ("Logou_t");
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (button, "clicked", G_CALLBACK(logout), NULL);
-	gtk_widget_set_hexpand (button, TRUE);
-	gtk_widget_set_halign (button, GTK_ALIGN_END);
-	gtk_widget_set_margin_right (button, 5);
-	gtk_grid_attach_next_to ( GTK_GRID(gridBottom), data.logout, data.login, GTK_POS_LEFT, 1,1);
+	gtk_container_add( GTK_CONTAINER(buttonbox), data.logout);
 
 	/* Spinner */
 	data.spinner = gtk_spinner_new ();
