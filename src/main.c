@@ -110,6 +110,7 @@ int main (int argc, char *argv[])
 	gtk_grid_attach_next_to (GTK_GRID(gridMain), expander, gridEntry1, GTK_POS_BOTTOM, 1,1);
 	gtk_orientable_set_orientation ( GTK_ORIENTABLE(gridOptions), GTK_ORIENTATION_VERTICAL);
 	gtk_widget_set_margin_left (gridOptions, 17);
+	gtk_widget_set_margin_bottom (gridOptions, 10);
 	gtk_container_add (GTK_CONTAINER(expander), gridOptions);
 
 	/* ISS checkbox */
@@ -139,14 +140,18 @@ int main (int argc, char *argv[])
 	gtk_container_add( GTK_CONTAINER(gridOptions), radio2);
 
 	/* MAC address label and entry */
-	label = gtk_label_new ("        MAC Address : "); // more elegance
+	label = gtk_label_new ("MAC Address : ");
 	data.macEntry = entry = gtk_entry_new();
 	gtk_entry_set_max_length((GtkEntry *) entry, 12);
 	gtk_entry_set_width_chars ((GtkEntry *) entry, 18);
+	gtk_entry_set_placeholder_text( GTK_ENTRY(entry), "01:23:45:67:89:AB");
 	gtk_widget_set_sensitive (entry, FALSE);
+	gtk_widget_set_hexpand (entry, TRUE);
+	gtk_widget_set_halign (entry, GTK_ALIGN_END);
 	gtk_container_add( GTK_CONTAINER(gridMac), label);
 	gtk_container_add( GTK_CONTAINER(gridMac), entry);
 	gtk_container_add( GTK_CONTAINER(gridOptions), gridMac);
+	gtk_widget_set_margin_left (gridMac, 25);
 
 
 
