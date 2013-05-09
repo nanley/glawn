@@ -79,21 +79,21 @@ int main (int argc, char *argv[])
 
 	/* Username entry field */
 	data.nameEntry = entry = gtk_entry_new();
-	gtk_entry_set_max_length((GtkEntry *) entry, 50);
-	gtk_entry_set_width_chars ((GtkEntry *) entry, 25);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 50);
+	gtk_entry_set_width_chars (GTK_ENTRY(entry), 25);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), entry, label, GTK_POS_RIGHT, 2,1);
 
 	/* Password entry field */
 	data.pwdEntry = entry = gtk_entry_new();
-	gtk_entry_set_max_length((GtkEntry *) entry, 50);
-	gtk_entry_set_visibility ((GtkEntry *)entry, FALSE);
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 50);
+	gtk_entry_set_visibility (GTK_ENTRY(entry), FALSE);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), entry, label2, GTK_POS_RIGHT, 2,1);
 
 	/* Show password checkbox */
 	data.pwdCBox = check = gtk_check_button_new_with_mnemonic ("_Show password");
-	g_signal_connect (check, "toggled", G_CALLBACK(show_pass), (GtkEntry *)entry);
+	g_signal_connect (check, "toggled", G_CALLBACK(show_pass), GTK_ENTRY(entry));
 	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), check, entry, GTK_POS_BOTTOM, 1,1);
 
 	/* Location checkbox */
@@ -142,9 +142,9 @@ int main (int argc, char *argv[])
 	/* MAC address label and entry */
 	label = gtk_label_new ("MAC Address : ");
 	data.macEntry = entry = gtk_entry_new();
-	gtk_entry_set_max_length((GtkEntry *) entry, 12);
-	gtk_entry_set_width_chars ((GtkEntry *) entry, 18);
-	gtk_entry_set_placeholder_text( GTK_ENTRY(entry), "01:23:45:67:89:AB");
+	gtk_entry_set_max_length(GTK_ENTRY(entry), 12);
+	gtk_entry_set_width_chars (GTK_ENTRY(entry), 18);
+	gtk_entry_set_placeholder_text(GTK_ENTRY(entry), "01:23:45:67:89:AB");
 	gtk_widget_set_sensitive (entry, FALSE);
 	gtk_widget_set_hexpand (entry, TRUE);
 	gtk_widget_set_halign (entry, GTK_ALIGN_END);
