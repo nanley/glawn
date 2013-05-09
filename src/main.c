@@ -85,13 +85,13 @@ int main (int argc, char *argv[])
 
 	/* Username entry field */
 	data.nameEntry = entry = gtk_entry_new_with_max_length (50);
-	gtk_entry_set_width_chars ((GtkEntry *) entry, 25);
+	gtk_entry_set_width_chars (GTK_ENTRY(entry), 25);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
 
 	/* Password entry field */
 	data.pwdEntry = entry = gtk_entry_new_with_max_length(50);
-	gtk_entry_set_visibility ((GtkEntry *)entry, FALSE);
+	gtk_entry_set_visibility (GTK_ENTRY(entry), FALSE);
 	g_signal_connect (entry, "activate", G_CALLBACK(login), NULL);
 	gtk_box_pack_start (GTK_BOX(vbox2), entry, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(hbox1), vbox2, TRUE, TRUE, 0);
@@ -99,7 +99,7 @@ int main (int argc, char *argv[])
 
 	/* Show password checkbox */
 	data.pwdCBox = check = gtk_check_button_new_with_mnemonic ("_Show password");
-	g_signal_connect (check, "toggled", G_CALLBACK(show_pass), (GtkEntry *)entry);
+	g_signal_connect (check, "toggled", G_CALLBACK(show_pass), GTK_ENTRY(entry));
 	gtk_box_pack_start (GTK_BOX(hbox9), check, FALSE, FALSE, 0);
 
 	/* Location checkbox */
@@ -151,7 +151,7 @@ int main (int argc, char *argv[])
 	/* MAC address label and entry */
 	label = gtk_label_new ("        MAC Address : "); // more elegance
 	data.macEntry = entry = gtk_entry_new_with_max_length (12);
-	gtk_entry_set_width_chars ((GtkEntry *) entry, 18);
+	gtk_entry_set_width_chars (GTK_ENTRY(entry), 18);
 	gtk_widget_set_sensitive (entry, FALSE);
 	gtk_box_pack_start (GTK_BOX(hbMac), label, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(hbMac), entry, FALSE, FALSE, 0);
