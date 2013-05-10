@@ -143,8 +143,8 @@ int main (int argc, char *argv[])
 	label = gtk_label_new ("MAC Address : ");
 	data.macEntry = entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(entry), 12);
-	gtk_entry_set_width_chars (GTK_ENTRY(entry), 18);
 	gtk_entry_set_placeholder_text(GTK_ENTRY(entry), "01:23:45:67:89:AB");
+	gtk_entry_set_width_chars (GTK_ENTRY(entry), 18);
 	gtk_widget_set_sensitive (entry, FALSE);
 	gtk_widget_set_hexpand (entry, TRUE);
 	gtk_widget_set_halign (entry, GTK_ALIGN_END);

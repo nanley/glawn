@@ -65,7 +65,7 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp)
 
 void set_url ()
 {
-	if (gtk_toggle_button_get_active ((GtkToggleButton *) data.locCBox)) {
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox))) {
 		g_strlcpy (location, "https://mower.georgiatech-metz.fr/", -1);
 	} else  g_strlcpy (location, "https://auth.lawn.gatech.edu/", -1);
 }
@@ -131,14 +131,14 @@ void login ()
 {
 	// create POST string from GUI widgets
 	char *packet = g_strdup_printf ("username=%s&password=%s%s%s%s&output=text",
-		gtk_entry_get_text ((GtkEntry *)data.nameEntry),
-		gtk_entry_get_text ((GtkEntry *)data.pwdEntry), 
-		gtk_toggle_button_get_active ((GtkToggleButton *) data.issCBox) ? "" : "&iss=false",
+		gtk_entry_get_text (GTK_ENTRY(data.nameEntry)),
+		gtk_entry_get_text (GTK_ENTRY(data.pwdEntry)), 
+		gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.issCBox)) ? "" : "&iss=false",
 		gtk_widget_is_sensitive (data.macEntry) ? "&mac=" : "",
-		gtk_entry_get_text ((GtkEntry *)data.macEntry));
+		gtk_entry_get_text (GTK_ENTRY(data.macEntry)));
 
 	// update label
-	gtk_label_set_markup ( (GtkLabel *)data.status, "<small>Logging you in..</small>");
+	gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Logging you in..</small>");
 	update_gui (SPIN);
 	
 #ifndef DEBUG
@@ -167,7 +167,7 @@ void login ()
 void logout (GtkWidget *widget, GtkWidget *button)
 {
 	// update label
-	gtk_label_set_markup ( (GtkLabel *)data.status, "<small>Logging you out..</small>");
+	gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Logging you out..</small>");
 	update_gui (SPIN);
 
 	// setup and send logout request
