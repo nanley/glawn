@@ -5,6 +5,7 @@ CCLD = gcc
 # compiler and linker flags
 CFLAGS = -Wall `pkg-config --cflags gtk+-2.0`
 LDFLAGS = `pkg-config --libs gtk+-2.0 libcurl`
+CPPFLAGS =
 
 # sources and headers to use
 SOURCES = main.c callbacks.c gui.c
@@ -21,7 +22,7 @@ glawn: $(SOURCES:.c=.o)
 
 # compile sources into objects
 %.o: %.c
-	$(CC) $(CFLAGS) -c $^
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $^
 
 clean:
 	rm -f *.o
