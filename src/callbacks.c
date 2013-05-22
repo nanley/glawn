@@ -26,7 +26,6 @@ GKeyFile *settings;
 static CURL *curl;
 int curl_return;
 
-char *location;
 gchar *buffer;
 gchar **locs;
 
@@ -78,7 +77,7 @@ void set_url ()
 gchar *get_url ()
 {
 	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
-	return location = *(locs+index);
+	return locs[index];
 }
 
 
@@ -183,7 +182,7 @@ void logout (GtkWidget *widget, GtkWidget *button)
 	update_gui (SPIN);
 
 	// setup and send logout request
-	g_sprintf (buffer, "%slogout.php?output=text", location);
+	g_sprintf (buffer, "%slogout.php?output=text", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);
