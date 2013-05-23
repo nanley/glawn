@@ -19,15 +19,12 @@
 
 
 #include "callbacks.h"
-#define SETTINGS_FILE "./config/settings.ini"
 extern pack data;
-GKeyFile *settings;
 
 static CURL *curl;
 int curl_return;
 
 gchar *buffer;
-gchar **locs;
 
 static GMutex * GTK_Mutex = NULL;
 
@@ -46,12 +43,7 @@ void mac_switch (GtkWidget *widget, int Boolean)
 
 void quit_glawn ()
 {
-	/* Write last location to settings file */
-	gchar *settings_data = g_key_file_to_data(settings, NULL, NULL);
-	g_file_set_contents (SETTINGS_FILE, settings_data, -1, NULL);
-	g_key_file_free(settings);
-	g_strfreev(locs);
-
+	save_settings();
 	/* Free pointers and exit */
 	curl_easy_cleanup (curl);
 	g_free (buffer);
@@ -67,33 +59,6 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp)
 }
 
 
-void set_url ()
-{
-	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
-	g_key_file_set_integer(settings, "config", "current", index);
-}
-
-
-gchar *get_url ()
-{
-	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
-	return locs[index];
-}
-
-
-
-void load_settings ()
-{
-	/* Load location from settings file */
-	settings = g_key_file_new();
-	if (!g_key_file_load_from_file(settings, SETTINGS_FILE, G_KEY_FILE_NONE, NULL)) {
-		fprintf(stderr, "Can't find settings file: %s\n", SETTINGS_FILE);
-		exit(EXIT_FAILURE);
-	}
-	g_key_file_set_list_separator(settings, ';');
-	locs = g_key_file_get_string_list(settings, "config", "sites", NULL, NULL);
-	update_gui (LOAD_INI_START);
-}
 
 
 void init_mutex() {

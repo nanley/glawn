@@ -8,7 +8,7 @@ LDFLAGS = `pkg-config --libs gtk+-2.0 libcurl`
 CPPFLAGS =
 
 # sources and headers to use
-SOURCES = main.c callbacks.c gui.c
+SOURCES = main.c callbacks.c gui.c settings.c
 HEADERS = callbacks.h
 
 .PHONY: all clean
