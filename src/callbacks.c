@@ -19,14 +19,16 @@
 
 
 #include "callbacks.h"
-
+#define SETTINGS_FILE "./config/settings.ini"
 extern pack data;
+GKeyFile *settings;
 
 static CURL *curl;
 int curl_return;
 
-char location[34];
+char *location;
 gchar *buffer;
+gchar **locs;
 
 static GMutex * GTK_Mutex = NULL;
 
@@ -46,7 +48,10 @@ void mac_switch (GtkWidget *widget, int Boolean)
 void quit_glawn ()
 {
 	/* Write last location to settings file */
-	g_file_set_contents ("./config/settings.ini", location, -1, NULL);
+	gchar *settings_data = g_key_file_to_data(settings, NULL, NULL);
+	g_file_set_contents (SETTINGS_FILE, settings_data, -1, NULL);
+	g_key_file_free(settings);
+	g_strfreev(locs);
 
 	/* Free pointers and exit */
 	curl_easy_cleanup (curl);
@@ -65,23 +70,30 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp)
 
 void set_url ()
 {
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox))) {
-		g_strlcpy (location, "https://mower.georgiatech-metz.fr/", -1);
-	} else  g_strlcpy (location, "https://auth.lawn.gatech.edu/", -1);
+	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
+	g_key_file_set_integer(settings, "config", "current", index);
 }
 
 
+gchar *get_url ()
+{
+	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
+	return location = *(locs+index);
+}
 
 
 
 void load_settings ()
 {
 	/* Load location from settings file */
-	g_file_get_contents ("./config/settings.ini", &buffer, NULL, NULL);
-	g_strlcpy (location, buffer, -1);
-	
+	settings = g_key_file_new();
+	if (!g_key_file_load_from_file(settings, SETTINGS_FILE, G_KEY_FILE_NONE, NULL)) {
+		fprintf(stderr, "Can't find settings file: %s\n", SETTINGS_FILE);
+		exit(EXIT_FAILURE);
+	}
+	g_key_file_set_list_separator(settings, ';');
+	locs = g_key_file_get_string_list(settings, "config", "sites", NULL, NULL);
 	update_gui (LOAD_INI_START);
-	
 }
 
 
@@ -109,11 +121,11 @@ int check_status ()
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, buffer);
 	curl_easy_setopt (curl, CURLOPT_CAINFO, "./config/cacert.pem");
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT, 5);
-	
-	g_printf ("Connecting to : %s\n", location);
+
+	g_printf ("Connecting to : %s\n", get_url());
 
 	// setup and send status request
-	g_sprintf (buffer, "%slogin_status.php", location);
+	g_sprintf (buffer, "%slogin_status.php", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);
@@ -148,7 +160,7 @@ void login ()
 #endif
 
 	// setup and send HTTP POST
-	g_sprintf (buffer, "%sindex.php", location);
+	g_sprintf (buffer, "%sindex.php", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_POSTFIELDS, packet);
 	curl_return = curl_easy_perform (curl);

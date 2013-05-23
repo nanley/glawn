@@ -22,7 +22,7 @@
 extern pack data;
 extern gchar *buffer;
 extern int curl_return;
-extern char location[34];
+extern GKeyFile *settings;
 
 void update_cmd (char *custom)
 {
@@ -93,8 +93,8 @@ void update_gui (enum _GUI_states gs)
 			break;
 		case LOAD_INI_START:
 			update_gui (SPIN);
-			if (!g_strcmp0 (location, "https://mower.georgiatech-metz.fr/"))
-				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.locCBox), TRUE);
+			int current = g_key_file_get_integer(settings, "config", "current", NULL);
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.locCBox), current);
 			break;
 	}
 }

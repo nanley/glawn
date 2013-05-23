@@ -23,6 +23,7 @@
 #include <glib/gprintf.h> // only call toplevel
 #include <glib/gstdio.h>
 #include <curl/curl.h>
+#include <stdlib.h>
 
 
 typedef struct gpointer {
