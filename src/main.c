@@ -18,6 +18,7 @@
 */
 
 #include "callbacks.h"
+#include "settings.h"
 
 pack data;
 

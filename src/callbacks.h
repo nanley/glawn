@@ -47,15 +47,11 @@ enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_E
 void mac_switch (GtkWidget *widget, int boolean);
 void show_pass (GtkToggleButton *pass_cbox, GtkEntry *pass_text);
 void quit_glawn ();
-void set_url ();
-gchar* get_url ();
 void login ();
 void logout (GtkWidget *widget, GtkWidget *button);
 size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp);
 
 /* Other functions */
-void load_settings ();
-void save_settings ();
 int check_status ();
 void update_cmd (char *);
 void update_gui (enum _GUI_states gs);

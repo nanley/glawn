@@ -18,11 +18,11 @@
 */
 
 #include "callbacks.h"
+#include "settings.h"
 
 extern pack data;
 extern gchar *buffer;
 extern int curl_return;
-extern GKeyFile *settings;
 
 void update_cmd (char *custom)
 {

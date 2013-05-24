@@ -18,8 +18,8 @@
 */
 
 #include "callbacks.h"
+#include "settings.h"
 
-#define SETTINGS_FILE "./config/settings.ini"
 
 GKeyFile *settings;
 static gchar **locs;

@@ -19,6 +19,8 @@
 
 
 #include "callbacks.h"
+#include "settings.h"
+
 extern pack data;
 
 static CURL *curl;
