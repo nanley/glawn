@@ -22,20 +22,15 @@
 
 
 GKeyFile *settings;
-static gchar **locs;
 extern pack data;
 
 void load_settings ()
 {
 	settings = g_key_file_new();
-	g_key_file_set_list_separator(settings, ';');
 	if (!g_key_file_load_from_file(settings, SETTINGS_FILE, G_KEY_FILE_NONE, NULL)) {
 		fprintf(stderr, "Can't find settings file: %s\n", SETTINGS_FILE);
 		exit(EXIT_FAILURE);
 	}
-
-	/* Load location from settings file */
-	locs = g_key_file_get_string_list(settings, "config", "sites", NULL, NULL);
 
 	update_gui (LOAD_INI_START);
 }
@@ -48,7 +43,6 @@ void save_settings ()
 
 	/* Free up pointers */
 	g_key_file_free(settings);
-	g_strfreev(locs);
 }
 
 void set_url ()
@@ -60,6 +54,10 @@ void set_url ()
 
 gchar *get_url ()
 {
+	static gchar *locs[] = {
+		"https://auth.lawn.gatech.edu/",
+		"https://mower.georgiatech-metz.fr/"
+	};
 	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
 	return locs[index];
 }
