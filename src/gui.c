@@ -101,7 +101,7 @@ void update_gui (enum _GUI_states gs)
 			break;
 		case LOAD_INI_START:
 			update_gui (SPIN);
-			int current = g_key_file_get_integer(settings, "config", "current", NULL);
+			int current = get_url_index();
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.locCBox), current);
 			break;
 	}

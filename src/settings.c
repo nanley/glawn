@@ -20,8 +20,9 @@
 #include "callbacks.h"
 #include "settings.h"
 
+#define SETTINGS_FILE "./config/settings.ini"
 
-GKeyFile *settings;
+static GKeyFile *settings;
 extern pack data;
 
 void load_settings ()
@@ -62,3 +63,7 @@ gchar *get_url ()
 	return locs[index];
 }
 
+int get_url_index ()
+{
+	return g_key_file_get_integer(settings, "config", "current", NULL);
+}

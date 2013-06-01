@@ -17,13 +17,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define SETTINGS_FILE "./config/settings.ini"
-
-/* Provide access to the settings key file object */
-extern GKeyFile *settings;
 
 /* Function prototypes */
 void load_settings ();
 void save_settings ();
 void set_url ();
 gchar *get_url ();
+int get_url_index ();
