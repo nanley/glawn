@@ -27,7 +27,7 @@ extern pack data;
 void load_settings ()
 {
 	settings = g_key_file_new();
-	if (!g_key_file_load_from_file(settings, SETTINGS_FILE, G_KEY_FILE_NONE, NULL)) {
+	if (!g_key_file_load_from_file(settings, SETTINGS_FILE, G_KEY_FILE_KEEP_COMMENTS, NULL)) {
 		fprintf(stderr, "Can't find settings file: %s\n", SETTINGS_FILE);
 		exit(EXIT_FAILURE);
 	}
