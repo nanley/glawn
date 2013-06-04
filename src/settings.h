@@ -21,6 +21,5 @@
 /* Function prototypes */
 void load_settings ();
 void save_settings ();
-void set_url ();
 gchar *get_url ();
 int get_url_index ();

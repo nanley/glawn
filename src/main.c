@@ -107,7 +107,6 @@ int main (int argc, char *argv[])
 	data.locCBox = check = gtk_check_button_new_with_mnemonic ("_GTL");
 	tooltip = gtk_tooltips_new ();
 	gtk_tooltips_set_tip (tooltip, check, "Enable Georgia Tech-Lorraine support", NULL);
-	g_signal_connect (check, "toggled", G_CALLBACK(set_url), NULL);
 	gtk_box_pack_start (GTK_BOX(hbox9), check, FALSE, FALSE, 9);
 	gtk_box_pack_start (GTK_BOX(vbox2), hbox9, FALSE, FALSE, 0);
 

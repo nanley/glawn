@@ -37,19 +37,16 @@ void load_settings ()
 void save_settings ()
 {
 	/* Write last location to settings file */
+	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
+	g_key_file_set_integer(settings, "config", "current", index);
+
+	/* Save settings object to file */
 	gchar *settings_data = g_key_file_to_data(settings, NULL, NULL);
 	g_file_set_contents (SETTINGS_FILE, settings_data, -1, NULL);
 
 	/* Free up pointers */
 	g_key_file_free(settings);
 }
-
-void set_url ()
-{
-	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
-	g_key_file_set_integer(settings, "config", "current", index);
-}
-
 
 gchar *get_url ()
 {
