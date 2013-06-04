@@ -32,8 +32,6 @@ void load_settings ()
 		fprintf(stderr, "Can't find settings file: %s\n", SETTINGS_FILE);
 		exit(EXIT_FAILURE);
 	}
-
-	update_gui (LOAD_INI_START);
 }
 
 void save_settings ()

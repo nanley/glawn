@@ -190,6 +190,7 @@ int main (int argc, char *argv[])
 	/*Load_settings */
 	init_mutex();
 	load_settings();
+	update_gui (LOAD_INI_START);
 	
 	// send curl request for status
 	update_gui (CHECK_STAT_START);
