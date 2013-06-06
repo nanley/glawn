@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2012  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,9 @@
 */
 
 #include "callbacks.h"
+#include "settings.h"
+#include "gui.h"
+#include "main.h"
 
 pack data;
 
@@ -99,7 +102,6 @@ int main (int argc, char *argv[])
 	/* Location checkbox */
 	data.locCBox = check = gtk_check_button_new_with_mnemonic ("_GTL");
 	gtk_widget_set_tooltip_text (check, "Enable Georgia Tech-Lorraine support");
-	g_signal_connect (check, "toggled", G_CALLBACK(set_url), NULL);
 	gtk_grid_attach_next_to ( GTK_GRID(gridEntry1), check, data.pwdCBox, GTK_POS_RIGHT, 1,1);
 
 
@@ -198,6 +200,7 @@ int main (int argc, char *argv[])
 	/*Load_settings */
 	init_mutex();
 	load_settings();
+	update_gui (LOAD_INI_START);
 	
 	// send curl request for status
 	update_gui (CHECK_STAT_START);

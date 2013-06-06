@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2012  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,13 +19,14 @@
 
 
 #include "callbacks.h"
+#include "settings.h"
+#include "gui.h"
+#include "main.h"
 
-extern pack data;
 
 static CURL *curl;
 int curl_return;
 
-char location[34];
 gchar *buffer;
 
 static GMutex * GTK_Mutex = NULL;
@@ -45,9 +46,7 @@ void mac_switch (GtkWidget *widget, int Boolean)
 
 void quit_glawn ()
 {
-	/* Write last location to settings file */
-	g_file_set_contents ("./config/settings.ini", location, -1, NULL);
-
+	save_settings();
 	/* Free pointers and exit */
 	curl_easy_cleanup (curl);
 	g_free (buffer);
@@ -63,26 +62,6 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp)
 }
 
 
-void set_url ()
-{
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox))) {
-		g_strlcpy (location, "https://mower.georgiatech-metz.fr/", -1);
-	} else  g_strlcpy (location, "https://auth.lawn.gatech.edu/", -1);
-}
-
-
-
-
-
-void load_settings ()
-{
-	/* Load location from settings file */
-	g_file_get_contents ("./config/settings.ini", &buffer, NULL, NULL);
-	g_strlcpy (location, buffer, -1);
-	
-	update_gui (LOAD_INI_START);
-	
-}
 
 
 void init_mutex() {
@@ -109,11 +88,11 @@ int check_status ()
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, buffer);
 	curl_easy_setopt (curl, CURLOPT_CAINFO, "./config/cacert.pem");
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT, 5);
-	
-	g_printf ("Connecting to : %s\n", location);
+
+	g_printf ("Connecting to : %s\n", get_url());
 
 	// setup and send status request
-	g_sprintf (buffer, "%slogin_status.php", location);
+	g_sprintf (buffer, "%slogin_status.php", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);
@@ -148,7 +127,7 @@ void login ()
 #endif
 
 	// setup and send HTTP POST
-	g_sprintf (buffer, "%sindex.php", location);
+	g_sprintf (buffer, "%sindex.php", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_POSTFIELDS, packet);
 	curl_return = curl_easy_perform (curl);
@@ -171,7 +150,7 @@ void logout (GtkWidget *widget, GtkWidget *button)
 	update_gui (SPIN);
 
 	// setup and send logout request
-	g_sprintf (buffer, "%slogout.php?output=text", location);
+	g_sprintf (buffer, "%slogout.php?output=text", get_url());
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);

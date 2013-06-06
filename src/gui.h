@@ -18,26 +18,8 @@
 */
 
 
+enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_END, LOG_IN_END, LOG_OUT_END };
 
-#include <gtk/gtk.h>
-#include <glib/gprintf.h> // only call toplevel
-#include <glib/gstdio.h>
-#include <curl/curl.h>
-#include <stdlib.h>
-
-
-extern int curl_return;
-extern gchar *buffer;
-
-/* Callback function prototypes */
-void mac_switch (GtkWidget *widget, int boolean);
-void show_pass (GtkToggleButton *pass_cbox, GtkEntry *pass_text);
-void quit_glawn ();
-void login ();
-void logout (GtkWidget *widget, GtkWidget *button);
-size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp);
-
-/* Other functions */
-int check_status ();
-int init_check_status();
-void init_mutex();
+/* Function Prototypes */
+void update_cmd (char *);
+void update_gui (enum _GUI_states gs);

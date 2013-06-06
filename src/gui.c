@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2012  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,11 +18,10 @@
 */
 
 #include "callbacks.h"
+#include "settings.h"
+#include "gui.h"
+#include "main.h"
 
-extern pack data;
-extern gchar *buffer;
-extern int curl_return;
-extern char location[34];
 
 void update_cmd (char *custom)
 {
@@ -59,6 +58,9 @@ void update_gui (enum _GUI_states gs)
 				
 				/* Allow logging out */
 				gtk_widget_set_sensitive (data.logout, TRUE);
+
+				/* Don't allow changing location */
+				gtk_widget_set_sensitive (data.locCBox, FALSE);
 				gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Logged in</small>");
 			} else  {
 				gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Not logged in</small>");
@@ -71,7 +73,11 @@ void update_gui (enum _GUI_states gs)
 				gtk_label_set_markup (GTK_LABEL(data.status),
 				"<span font_weight='bold' font_size='small' fgcolor='#3A6A3A'>Login successful</span>");
 				gtk_entry_set_text (GTK_ENTRY(data.pwdEntry), "");
+
+				/* Allow logging out */
 				gtk_widget_set_sensitive (data.logout, TRUE);
+				gtk_widget_set_sensitive (data.locCBox, FALSE);
+
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.pwdCBox), FALSE);
 			} else {
 				gtk_label_set_markup (GTK_LABEL(data.status),
@@ -85,6 +91,7 @@ void update_gui (enum _GUI_states gs)
 				"<span font_weight='bold' font_size='small'>Logout successful</span>");
 				gtk_widget_set_sensitive (data.logout, FALSE);
 				gtk_widget_set_sensitive (data.login, TRUE);
+				gtk_widget_set_sensitive (data.locCBox, TRUE);
 			} else {
 				gtk_label_set_markup (GTK_LABEL(data.status),
 				"<span font_weight='bold' font_size='small'>Logout failed</span>");
@@ -93,8 +100,8 @@ void update_gui (enum _GUI_states gs)
 			break;
 		case LOAD_INI_START:
 			update_gui (SPIN);
-			if (!g_strcmp0 (location, "https://mower.georgiatech-metz.fr/"))
-				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.locCBox), TRUE);
+			int current = get_url_index();
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.locCBox), current);
 			break;
 	}
 }
