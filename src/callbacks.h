@@ -41,7 +41,6 @@ typedef struct gpointer {
 	GtkWidget *radio_other;
 } pack;
 
-enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_END, LOG_IN_END, LOG_OUT_END };
 
 /* Callback function prototypes */
 void mac_switch (GtkWidget *widget, int boolean);
@@ -53,7 +52,5 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp);
 
 /* Other functions */
 int check_status ();
-void update_cmd (char *);
-void update_gui (enum _GUI_states gs);
 int init_check_status();
 void init_mutex();

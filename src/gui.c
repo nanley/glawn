@@ -19,6 +19,7 @@
 
 #include "callbacks.h"
 #include "settings.h"
+#include "gui.h"
 
 extern pack data;
 extern gchar *buffer;
