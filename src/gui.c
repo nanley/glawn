@@ -20,10 +20,8 @@
 #include "callbacks.h"
 #include "settings.h"
 #include "gui.h"
+#include "main.h"
 
-extern pack data;
-extern gchar *buffer;
-extern int curl_return;
 
 void update_cmd (char *custom)
 {

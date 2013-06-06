@@ -20,6 +20,7 @@
 #include "callbacks.h"
 #include "settings.h"
 #include "gui.h"
+#include "main.h"
 
 pack data;
 

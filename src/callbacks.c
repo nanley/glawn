@@ -21,8 +21,8 @@
 #include "callbacks.h"
 #include "settings.h"
 #include "gui.h"
+#include "main.h"
 
-extern pack data;
 
 static CURL *curl;
 int curl_return;

@@ -19,11 +19,11 @@
 
 #include "callbacks.h"
 #include "settings.h"
+#include "main.h"
 
 #define SETTINGS_FILE "./config/settings.ini"
 
 static GKeyFile *settings;
-extern pack data;
 
 void load_settings ()
 {
