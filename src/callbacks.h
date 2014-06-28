@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2014  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 
 
+#pragma once
 #include <gtk/gtk.h>
 #include <glib/gprintf.h> // only call toplevel
 #include <glib/gstdio.h>
@@ -40,4 +41,3 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp);
 /* Other functions */
 int check_status ();
 int init_check_status();
-void init_mutex();

@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2014  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,9 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "callbacks.h"
-#include "settings.h"
-#include "gui.h"
 #include "main.h"
 
 

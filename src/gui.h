@@ -1,7 +1,7 @@
 /*
     This file is part of Glawn.
 
-    Copyright (C) 2010-2013  Nanley Chery <nanleychery@gmail.com>
+    Copyright (C) 2010-2014  Nanley Chery <nanleychery@gmail.com>
 
     Glawn is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#pragma once
 enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_END, LOG_IN_END, LOG_OUT_END };
 
 /* Function Prototypes */
