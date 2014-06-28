@@ -29,7 +29,7 @@ int curl_return;
 
 gchar *buffer;
 
-static GMutex * GTK_Mutex = NULL;
+static GMutex GTK_Mutex;
 
 
 void show_pass (GtkToggleButton *pass_cbox, GtkEntry *pass_text)
@@ -50,8 +50,7 @@ void quit_glawn ()
 	/* Free pointers and exit */
 	curl_easy_cleanup (curl);
 	g_free (buffer);
-	g_mutex_unlock(GTK_Mutex);
-	g_mutex_free(GTK_Mutex);
+	g_mutex_unlock(&GTK_Mutex);
 	gtk_main_quit ();
 }
 
@@ -64,13 +63,9 @@ size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp)
 
 
 
-void init_mutex() {
-	g_assert (GTK_Mutex == NULL);
-	GTK_Mutex = g_mutex_new();
-}
 
 int init_check_status() {
-	if (g_mutex_trylock(GTK_Mutex)) {
+	if (g_mutex_trylock(&GTK_Mutex)) {
 		update_gui (CHECK_STAT_END);
 		return FALSE;
 	}
@@ -79,7 +74,7 @@ int init_check_status() {
 
 int check_status ()
 {
-	g_mutex_lock(GTK_Mutex);
+	g_mutex_lock(&GTK_Mutex);
 	buffer = g_realloc(buffer, 160);
 
 	// initialize curl library 
@@ -99,7 +94,7 @@ int check_status ()
 	
 	// update status in GUI and CMD 
 	update_cmd("Initial status");
-	g_mutex_unlock(GTK_Mutex);
+	g_mutex_unlock(&GTK_Mutex);
 	return FALSE;
 }
 

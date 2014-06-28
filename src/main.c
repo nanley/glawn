@@ -44,10 +44,7 @@ int main (int argc, char *argv[])
 	GtkWidget *gridBottom;
 	GtkWidget *gridMac;
 
-	/* Initialize multihreading and gtk functions */
-	g_thread_init (NULL);
-	gdk_threads_init ();
-	gdk_threads_enter ();
+	/* Initialize gtk functions */
 	gtk_init (&argc, &argv);
 
 	/* Create main window */
@@ -111,7 +108,7 @@ int main (int argc, char *argv[])
 	expander = gtk_expander_new_with_mnemonic ("_Options");
 	gtk_grid_attach_next_to (GTK_GRID(gridMain), expander, gridEntry1, GTK_POS_BOTTOM, 1,1);
 	gtk_orientable_set_orientation ( GTK_ORIENTABLE(gridOptions), GTK_ORIENTATION_VERTICAL);
-	gtk_widget_set_margin_left (gridOptions, 17);
+	gtk_widget_set_margin_start (gridOptions, 17);
 	gtk_widget_set_margin_bottom (gridOptions, 10);
 	gtk_container_add (GTK_CONTAINER(expander), gridOptions);
 
@@ -153,7 +150,7 @@ int main (int argc, char *argv[])
 	gtk_container_add( GTK_CONTAINER(gridMac), label);
 	gtk_container_add( GTK_CONTAINER(gridMac), entry);
 	gtk_container_add( GTK_CONTAINER(gridOptions), gridMac);
-	gtk_widget_set_margin_left (gridMac, 25);
+	gtk_widget_set_margin_start (gridMac, 25);
 
 
 
@@ -162,7 +159,7 @@ int main (int argc, char *argv[])
 
 	/* Spinner */
 	data.spinner = gtk_spinner_new ();
-	gtk_widget_set_margin_right (data.spinner, 4);
+	gtk_widget_set_margin_end (data.spinner, 4);
 	gtk_container_add( GTK_CONTAINER(gridBottom), data.spinner);
 
 	/* Statusbar */
@@ -198,18 +195,16 @@ int main (int argc, char *argv[])
 		  "===========================\n\n");
 
 	/*Load_settings */
-	init_mutex();
 	load_settings();
 	update_gui (LOAD_INI_START);
 	
 	// send curl request for status
 	update_gui (CHECK_STAT_START);
-	g_thread_create((GThreadFunc)check_status, NULL, FALSE, NULL);
+	g_thread_new("Check status", (GThreadFunc)check_status, NULL);
 	g_timeout_add_seconds_full(G_PRIORITY_LOW, 1, init_check_status, NULL, NULL);
 	
    	/* Start main loop */
 	gtk_main ();
-	gdk_threads_leave ();
 
 	return 0;
 }
