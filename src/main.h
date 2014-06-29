@@ -21,19 +21,3 @@
 #include "callbacks.h"
 #include "settings.h"
 #include "gui.h"
-
-typedef struct gpointer {
-	GtkWidget *nameEntry;
-	GtkWidget *pwdEntry;
-	GtkWidget *issCBox;
-	GtkWidget *locCBox;
-	GtkWidget *macEntry;
-	GtkWidget *status;
-	GtkWidget *spinner;
-	GtkWidget *login;
-	GtkWidget *logout;
-	GtkWidget *radio_this;
-	GtkToggleButton *radio_other;
-} pack;
-
-extern pack data;

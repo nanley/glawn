@@ -25,6 +25,7 @@
 #include <glib/gstdio.h>
 #include <curl/curl.h>
 #include <stdlib.h>
+#include "gui.h"
 
 
 extern int curl_return;
@@ -36,7 +37,7 @@ void mac_switch (GtkToggleButton *togglebutton,
 void show_pass (GtkEntry *entry,
 		GtkEntryIconPosition icon_pos,
 		GdkEventButton *event,
-		gpointer user_data);
+		pack *user_data);
 void quit_glawn ();
 void login ();
 void logout (GtkWidget *widget, GtkWidget *button);

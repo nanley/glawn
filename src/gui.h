@@ -23,3 +23,19 @@ enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_E
 /* Function Prototypes */
 void update_cmd (char *);
 void update_gui (enum _GUI_states gs);
+
+typedef struct gpointer {
+	GtkWidget *nameEntry;
+	GtkWidget *pwdEntry;
+	GtkWidget *issCBox;
+	GtkWidget *locCBox;
+	GtkWidget *macEntry;
+	GtkWidget *status;
+	GtkWidget *spinner;
+	GtkWidget *login;
+	GtkWidget *logout;
+	GtkWidget *radio_this;
+	GtkToggleButton *radio_other;
+} pack;
+
+extern pack data;
