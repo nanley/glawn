@@ -29,15 +29,23 @@ gchar *buffer;
 static GMutex GTK_Mutex;
 
 
-void show_pass (GtkToggleButton *pass_cbox, GtkEntry *pass_text)
+void show_pass (GtkEntry *entry,
+		GtkEntryIconPosition icon_pos,
+		GdkEventButton *event,
+		gpointer user_data)
 {
-	gtk_entry_set_visibility(pass_text, gtk_toggle_button_get_active (pass_cbox));
+	int visibility = 0;
+	if (event->type == GDK_BUTTON_PRESS)
+		visibility = 1;
+	gtk_entry_set_visibility(entry, visibility);
 }
 
 
-void mac_switch (GtkWidget *widget, int Boolean)
+void mac_switch (GtkToggleButton *togglebutton,
+		gpointer user_data)
 {
-	gtk_widget_set_sensitive (data.macEntry, Boolean);
+	int enabled = gtk_toggle_button_get_active(((pack*)user_data)->radio_other);
+	gtk_widget_set_sensitive (data.macEntry, enabled);
 }
 
 

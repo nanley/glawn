@@ -31,8 +31,12 @@ extern int curl_return;
 extern gchar *buffer;
 
 /* Callback function prototypes */
-void mac_switch (GtkWidget *widget, int boolean);
-void show_pass (GtkToggleButton *pass_cbox, GtkEntry *pass_text);
+void mac_switch (GtkToggleButton *togglebutton,
+		gpointer user_data);
+void show_pass (GtkEntry *entry,
+		GtkEntryIconPosition icon_pos,
+		GdkEventButton *event,
+		gpointer user_data);
 void quit_glawn ();
 void login ();
 void logout (GtkWidget *widget, GtkWidget *button);

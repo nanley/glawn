@@ -26,7 +26,6 @@ typedef struct gpointer {
 	GtkWidget *nameEntry;
 	GtkWidget *pwdEntry;
 	GtkWidget *issCBox;
-	GtkWidget *pwdCBox;
 	GtkWidget *locCBox;
 	GtkWidget *macEntry;
 	GtkWidget *status;
@@ -34,7 +33,7 @@ typedef struct gpointer {
 	GtkWidget *login;
 	GtkWidget *logout;
 	GtkWidget *radio_this;
-	GtkWidget *radio_other;
+	GtkToggleButton *radio_other;
 } pack;
 
 extern pack data;

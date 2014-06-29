@@ -75,7 +75,6 @@ void update_gui (enum _GUI_states gs)
 				gtk_widget_set_sensitive (data.logout, TRUE);
 				gtk_widget_set_sensitive (data.locCBox, FALSE);
 
-				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(data.pwdCBox), FALSE);
 			} else {
 				gtk_label_set_markup (GTK_LABEL(data.status),
 				"<span font_weight='bold' font_size='small' fgcolor='#632525'>Login failed</span>");
