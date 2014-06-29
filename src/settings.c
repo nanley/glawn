@@ -17,8 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "callbacks.h"
-#include "settings.h"
 #include "main.h"
 
 #define SETTINGS_FILE "./config/settings.ini"

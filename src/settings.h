@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#pragma once
 /* Function prototypes */
 void load_settings ();
 void save_settings ();
