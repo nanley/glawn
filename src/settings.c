@@ -32,10 +32,10 @@ void load_settings ()
 	}
 }
 
-void save_settings ()
+void save_settings (pack *data)
 {
 	/* Write last location to settings file */
-	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
+	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data->locCBox));
 	g_key_file_set_integer(settings, "config", "current", index);
 
 	/* Save settings object to file */
@@ -46,13 +46,13 @@ void save_settings ()
 	g_key_file_free(settings);
 }
 
-gchar *get_url ()
+gchar *get_url (pack *data)
 {
 	static gchar *locs[] = {
 		"https://auth.lawn.gatech.edu/",
 		"https://mower.georgiatech-metz.fr/"
 	};
-	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.locCBox));
+	int index = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data->locCBox));
 	return locs[index];
 }
 

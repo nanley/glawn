@@ -39,8 +39,8 @@ void show_pass (GtkEntry *entry,
 		GdkEventButton *event,
 		gpointer user_data);
 void quit_glawn ();
-void login ();
-void logout (GtkWidget *widget, GtkWidget *button);
+void login (GtkButton *button, pack *user_data);
+void logout (GtkButton *button, pack *user_data);
 size_t curl_callback (void *buffer, size_t size, size_t nmemb, void *userp);
 
 /* Other functions */

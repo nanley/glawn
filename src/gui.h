@@ -20,10 +20,6 @@
 #pragma once
 enum _GUI_states {SPIN, SPINSTOP, LOAD_INI_START, CHECK_STAT_START, CHECK_STAT_END, LOG_IN_END, LOG_OUT_END };
 
-/* Function Prototypes */
-void update_cmd (char *);
-void update_gui (enum _GUI_states gs);
-
 typedef struct gpointer {
 	GtkWidget *nameEntry;
 	GtkWidget *pwdEntry;
@@ -38,4 +34,8 @@ typedef struct gpointer {
 	GtkToggleButton *radio_other;
 } pack;
 
-extern pack data;
+/* Function Prototypes */
+void update_cmd (char *);
+void update_gui (enum _GUI_states gs);
+void create_gui (pack *data);
+pack *get_gui();

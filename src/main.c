@@ -19,36 +19,15 @@
 
 #include "main.h"
 
-pack data;
-
 int main (int argc, char *argv[])
 {
-
-
 	/* Initialize gtk functions */
 	gtk_init (&argc, &argv);
 
 	/* Create main window */
-	GtkBuilder * builder 	= gtk_builder_new_from_file("./gui/window.glade");
-	GtkWidget * window 	= GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-	data.nameEntry		= GTK_WIDGET(gtk_builder_get_object(builder, "entry1"));
-	data.pwdEntry		= GTK_WIDGET(gtk_builder_get_object(builder, "entry2"));
-	data.locCBox 		= GTK_WIDGET(gtk_builder_get_object(builder, "checkbutton2"));
-	data.issCBox 		= GTK_WIDGET(gtk_builder_get_object(builder, "checkbutton1"));
-	data.radio_this 	= GTK_WIDGET(gtk_builder_get_object(builder, "radiobutton1"));
-	data.radio_other = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "radiobutton2"));
-	data.macEntry 		= GTK_WIDGET(gtk_builder_get_object(builder, "entry3"));
-	data.spinner 		= GTK_WIDGET(gtk_builder_get_object(builder, "spinner1"));
-	data.status 		= GTK_WIDGET(gtk_builder_get_object(builder, "label4"));
-	data.logout 		= GTK_WIDGET(gtk_builder_get_object(builder, "button1"));
-	data.login 		= GTK_WIDGET(gtk_builder_get_object(builder, "button2"));
+	pack data;
+	create_gui(&data);
 
-	/* Connect signal handlers */
-	gtk_builder_connect_signals(builder, &data);
-
-
-	/* Display window */
-	gtk_widget_show_all (window);
 
 	/* Ascii art */
 	g_printf ("\n===========================\n"

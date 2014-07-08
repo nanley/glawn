@@ -49,7 +49,7 @@ void mac_switch (GtkToggleButton *togglebutton,
 
 void quit_glawn ()
 {
-	save_settings();
+	save_settings(get_gui());
 	/* Free pointers and exit */
 	curl_easy_cleanup (curl);
 	g_free (buffer);
@@ -87,10 +87,11 @@ int check_status ()
 	curl_easy_setopt (curl, CURLOPT_CAINFO, "./config/cacert.pem");
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT, 5);
 
-	g_printf ("Connecting to : %s\n", get_url());
+	pack *data = get_gui();
+	g_printf ("Connecting to : %s\n", get_url(data));
 
 	// setup and send status request
-	g_sprintf (buffer, "%slogin_status.php", get_url());
+	g_sprintf (buffer, "%slogin_status.php", get_url(data));
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);
@@ -104,18 +105,18 @@ int check_status ()
 
 
 
-void login ()
+void login (GtkButton *button, pack *user_data)
 {
 	// create POST string from GUI widgets
 	char *packet = g_strdup_printf ("username=%s&password=%s%s%s%s&output=text",
-		gtk_entry_get_text (GTK_ENTRY(data.nameEntry)),
-		gtk_entry_get_text (GTK_ENTRY(data.pwdEntry)), 
-		gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(data.issCBox)) ? "" : "&iss=false",
-		gtk_widget_is_sensitive (data.macEntry) ? "&mac=" : "",
-		gtk_entry_get_text (GTK_ENTRY(data.macEntry)));
+		gtk_entry_get_text (GTK_ENTRY(user_data->nameEntry)),
+		gtk_entry_get_text (GTK_ENTRY(user_data->pwdEntry)),
+		gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(user_data->issCBox)) ? "" : "&iss=false",
+		gtk_widget_is_sensitive (user_data->macEntry) ? "&mac=" : "",
+		gtk_entry_get_text (GTK_ENTRY(user_data->macEntry)));
 
 	// update label
-	gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Logging you in..</small>");
+	gtk_label_set_markup ( GTK_LABEL(user_data->status), "<small>Logging you in..</small>");
 	update_gui (SPIN);
 	
 #ifndef DEBUG
@@ -125,7 +126,8 @@ void login ()
 #endif
 
 	// setup and send HTTP POST
-	g_sprintf (buffer, "%sindex.php", get_url());
+	pack *data = get_gui();
+	g_sprintf (buffer, "%sindex.php", get_url(data));
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_POSTFIELDS, packet);
 	curl_return = curl_easy_perform (curl);
@@ -141,14 +143,15 @@ void login ()
 
 
 
-void logout (GtkWidget *widget, GtkWidget *button)
+void logout (GtkButton *button, pack *user_data)
 {
 	// update label
-	gtk_label_set_markup ( GTK_LABEL(data.status), "<small>Logging you out..</small>");
+	gtk_label_set_markup ( GTK_LABEL(user_data->status), "<small>Logging you out..</small>");
 	update_gui (SPIN);
 
 	// setup and send logout request
-	g_sprintf (buffer, "%slogout.php?output=text", get_url());
+	pack *data = get_gui();
+	g_sprintf (buffer, "%slogout.php?output=text", get_url(data));
 	curl_easy_setopt (curl, CURLOPT_URL, buffer);
 	curl_easy_setopt (curl, CURLOPT_HTTPGET, 1L);
 	curl_return = curl_easy_perform (curl);
