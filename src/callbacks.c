@@ -34,9 +34,7 @@ void show_pass (GtkEntry *entry,
 		GdkEventButton *event,
 		gpointer user_data)
 {
-	int visibility = 0;
-	if (event->type == GDK_BUTTON_PRESS)
-		visibility = 1;
+	int visibility = (event->type == GDK_BUTTON_PRESS);
 	gtk_entry_set_visibility(entry, visibility);
 }
 

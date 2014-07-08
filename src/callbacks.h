@@ -37,7 +37,7 @@ void mac_switch (GtkToggleButton *togglebutton,
 void show_pass (GtkEntry *entry,
 		GtkEntryIconPosition icon_pos,
 		GdkEventButton *event,
-		pack *user_data);
+		gpointer user_data);
 void quit_glawn ();
 void login ();
 void logout (GtkWidget *widget, GtkWidget *button);
