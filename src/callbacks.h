@@ -33,7 +33,7 @@ extern gchar *buffer;
 
 /* Callback function prototypes */
 void mac_switch (GtkToggleButton *togglebutton,
-		gpointer user_data);
+		GtkWidget *user_data);
 void show_pass (GtkEntry *entry,
 		GtkEntryIconPosition icon_pos,
 		GdkEventButton *event,

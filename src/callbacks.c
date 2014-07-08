@@ -42,10 +42,10 @@ void show_pass (GtkEntry *entry,
 
 
 void mac_switch (GtkToggleButton *togglebutton,
-		pack *user_data)
+		GtkWidget *user_data)
 {
-	int enabled = gtk_toggle_button_get_active(user_data->radio_other);
-	gtk_widget_set_sensitive (data.macEntry, enabled);
+	int sensitive = gtk_toggle_button_get_active(togglebutton);
+	gtk_widget_set_sensitive (user_data, sensitive);
 }
 
 
